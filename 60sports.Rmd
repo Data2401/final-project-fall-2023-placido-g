@@ -90,15 +90,13 @@ glimpse(toughestsport)
 
 ## Unfiltered Plot/Data
 ```{r, echo=FALSE}
-toughestsport %>% 
-  ggplot()+aes(x=reorder(SPORT,-RANK), y=TOTAL, fill=TOTAL)+geom_col()+ labs(title = 'Degree of difficulty in 60 sports',x='Sports',y='Total')+coord_flip()+ geom_text(aes(label=TOTAL,size=2.5))+scale_size_identity()
-
 
 toughestsport %>% kbl() %>% kable_paper()  %>% scroll_box(height = "800px")
 
-toughestsport %>% arrange(SPORT) %>% 
+
+toughestsport  %>%  arrange(SPORT) %>%
   summarise(max(TOTAL),min(TOTAL),mean(TOTAL))
-toughestsport
+
 ```
 
 
@@ -110,13 +108,12 @@ ice_sports <- toughestsport %>%
 
 
 ice_sports %>% 
-   ggplot()+aes(x=reorder(SPORT,-RANK2), y=TOTAL, fill=TOTAL)+geom_col()+ labs(title = 'Degree of difficulty Snow/Ice Sports',x='Sports',y='Total')+coord_flip()+geom_text(aes(label=TOTAL),position = position_jitter(width = 0))
+   ggplot()+aes(x=reorder(SPORT,-RANK2), y=TOTAL, fill=TOTAL)+geom_col()+ labs(title = 'Degree of difficulty Snow/Ice Sports',x='Sports',y='Total')+coord_flip()+scale_fill_gradient(low = 'green',high = 'red')+geom_text(aes(label=TOTAL), hjust=-0.1,size=2.1, position = position_dodge(width=1),inherit.aes = TRUE)+ theme_bw()
 
 
 ice_sports %>% arrange(SPORT) %>% 
   summarise(max(TOTAL),min(TOTAL),mean(TOTAL)) 
-ice_sports
- 
+
 
 ```
 
@@ -129,11 +126,11 @@ adv_sports <- toughestsport %>%
 
 
 adv_sports %>% 
-   ggplot()+aes(x=reorder(SPORT,-RANK3), y=TOTAL, fill=TOTAL)+geom_col()+ labs(title = 'Degree of difficulty Outdoor-Adventure Sports',x='Sports',y='Total')+coord_flip()+geom_text(aes(label=TOTAL),position = position_jitter(width = 0))
+   ggplot()+aes(x=SPORT,y=TOTAL,color=SPORT)+ geom_point()+labs(title = 'Degree of difficulty Adventure Sports',x='Sports',y='Total')+scale_x_discrete(guide = guide_axis(n.dodge = 2))+geom_text(aes(label=TOTAL), hjust=-0.2,size=3.3, position = position_dodge(width=1),inherit.aes = TRUE)+ theme_bw()+ geom_vline(xintercept = 1:11,color='grey')
 
 adv_sports %>% arrange(SPORT) %>% 
   summarise(max(TOTAL),min(TOTAL),mean(TOTAL))
-adv_sports
+
 ```
 
 ## Toughest Water Sports
@@ -144,11 +141,13 @@ water_sports <- toughestsport %>%
 
 
 water_sports %>% 
-   ggplot()+aes(x=reorder(SPORT,-RANK4), y=TOTAL, fill=TOTAL)+geom_col()+ labs(title = 'Degree of difficulty Water Sports',x='Sports',y='Total')+coord_flip()+geom_text(aes(label=TOTAL),position = position_jitter(width = 0))
+    ggplot()+aes(x=reorder(SPORT,-RANK4), y=TOTAL, fill=TOTAL)+geom_col()+scale_fill_gradient(low = 'blue',high = 'purple')+ labs(title = 'Degree of difficulty Water Sports',x='Sports',y='Total')+coord_flip()+geom_text(aes(label=TOTAL), hjust=-0.1,size=2.1, position = position_dodge(width=1),inherit.aes = TRUE)+ theme_bw()
+
+#+geom_text(aes(label=TOTAL), hjust=-0.1,size=2.1, position = position_dodge(width=1),inherit.aes = TRUE)+ theme_bw()
 
 water_sports %>% arrange(SPORT) %>% 
   summarise(max(TOTAL),min(TOTAL),mean(TOTAL))
-water_sports
+
 ```
 
 
@@ -160,11 +159,11 @@ team_sports <- toughestsport %>%
 
 
 team_sports %>% 
-   ggplot()+aes(x=reorder(SPORT,-RANK4), y=TOTAL, fill=TOTAL)+geom_col()+ labs(title = 'Degree of difficulty Team Sports',x='Sports',y='Total')+coord_flip()+geom_text(aes(label=TOTAL),position = position_jitter(width = 0))
+   ggplot()+aes(x=SPORT,y=TOTAL,color=SPORT)+ geom_point()+labs(title = 'Degree of difficulty Team Sports',x='Sports',y='Total')+scale_x_discrete(guide = guide_axis(n.dodge = 2))+geom_text(aes(label=TOTAL), hjust=-0.2,size=2.5, position = position_dodge(width=1),inherit.aes = TRUE)+ theme_bw()+ geom_vline(xintercept = 1:11,color='grey')
 
 team_sports %>% arrange(SPORT) %>% 
   summarise(max(TOTAL),min(TOTAL),mean(TOTAL))
-team_sports
+
 
 ```
 
@@ -176,13 +175,11 @@ Indv_sports <- toughestsport %>%
 
 
 Indv_sports %>% 
-   ggplot()+aes(x=reorder(SPORT,-RANK5), y=TOTAL, fill=TOTAL)+geom_col()+ labs(title = 'Degree of difficulty Individual Sports',x='Sports',y='Total')+coord_flip()+geom_text(aes(label=TOTAL),position = position_jitter(width = 0))
+   ggplot()+aes(x=reorder(SPORT,-RANK5), y=TOTAL, fill=TOTAL)+geom_col()+scale_fill_gradient(low = 'navy',high = 'orange')+ labs(title = 'Degree of difficulty Individual Sports',x='Sports',y='Total')+coord_flip()+geom_text(aes(label=TOTAL), hjust=-0.1,size=2.1, position = position_dodge(width=1),inherit.aes = TRUE)+ theme_bw()
 
- Indv_sports %>% kbl() %>% kable_paper()  %>% scroll_box(height = "800px")
-Indv_sports %>% arrange(SPORT) %>% 
   
+Indv_sports %>% arrange(SPORT) %>% 
   summarise(max(TOTAL),min(TOTAL),mean(TOTAL))
-Indv_sports
 
 ```
 ## Easiest Sports Ranked
@@ -190,15 +187,10 @@ Indv_sports
 
 easiest_sport<- toughestsport %>% select(SPORT,END,STR,PWR,SPD,AGI,FLX,NER,DUR,HAN,ANA,TOTAL) %>%  mutate(NEW_RANK=dense_rank(TOTAL)) %>% arrange(NEW_RANK)
 
-easiest_sport %>% 
-  ggplot()+aes(x=reorder(SPORT,-NEW_RANK), y=TOTAL, fill=TOTAL)+geom_col()+ labs(title = 'Degree of simplicity in 54 sports',x='Sports',y='Total')+coord_flip()+ geom_text(aes(label=TOTAL,size=2.5))+scale_size_identity()
-
 
 easiest_sport %>% 
  kbl() %>% kable_paper()  %>% scroll_box(height = "800px")
 
-easiest_sport %>% arrange(SPORT) %>% 
-  summarise(max(TOTAL),min(TOTAL),mean(TOTAL))
 ```
 ## Conclusion
 
