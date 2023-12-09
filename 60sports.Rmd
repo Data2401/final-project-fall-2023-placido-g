@@ -126,7 +126,7 @@ adv_sports <- toughestsport %>%
 
 
 adv_sports %>% 
-   ggplot()+aes(x=SPORT,y=TOTAL,color=SPORT)+ geom_point()+labs(title = 'Degree of difficulty Adventure Sports',x='Sports',y='Total')+scale_x_discrete(guide = guide_axis(n.dodge = 2))+geom_text(aes(label=TOTAL), hjust=-0.2,size=3.3, position = position_dodge(width=1),inherit.aes = TRUE)+ theme_bw()+ geom_vline(xintercept = 1:11,color='grey')
+   ggplot()+aes(x=SPORT,y=TOTAL,color=SPORT)+ geom_point()+labs(title = 'Degree of difficulty Adventure Sports',x='Sports',y='Total')+scale_x_discrete(guide = guide_axis(n.dodge = 2))+geom_text(aes(label=TOTAL), hjust=-0.2,size=3.0, position = position_dodge(width=1),inherit.aes = TRUE)+ theme_bw()+ geom_vline(xintercept = 1:11,color='grey')
 
 adv_sports %>% arrange(SPORT) %>% 
   summarise(max(TOTAL),min(TOTAL),mean(TOTAL))
@@ -182,18 +182,29 @@ Indv_sports %>% arrange(SPORT) %>%
   summarise(max(TOTAL),min(TOTAL),mean(TOTAL))
 
 ```
-## Easiest Sports Ranked
+## Which skill has the highest overrall total aganist one another
+
 ```{r, echo=FALSE}
 
-easiest_sport<- toughestsport %>% select(SPORT,END,STR,PWR,SPD,AGI,FLX,NER,DUR,HAN,ANA,TOTAL) %>%  mutate(NEW_RANK=dense_rank(TOTAL)) %>% arrange(NEW_RANK)
+toughest_skill_overrall <- toughestsport %>% 
+  select(END,STR,PWR,SPD,AGI,FLX,NER,DUR,HAN,ANA) %>% 
+  summarise(across(where(is.numeric),sum)) %>% 
+  pivot_longer(.,cols=c(END,STR,PWR,SPD,AGI,FLX,NER,DUR,HAN,ANA), names_to = 'Skills',values_to ='Total') %>% 
+  ggplot()+aes(x=Skills,y=Total)+geom_point()+labs(title = '10 skills arranged based on their demand total for all sports')+geom_text(aes(label=Total), hjust=-0.2,size=2.7, position = position_dodge(width=1),inherit.aes = TRUE)+ theme_bw()+ geom_vline(xintercept = 1:10,color='navy')
 
-
-easiest_sport %>% 
- kbl() %>% kable_paper()  %>% scroll_box(height = "800px")
+toughest_skill_overrall
 
 ```
+
+The data collected here is the sum total for each skill.
+
+According to the graph, power (PWR) is considered the most or highest utilized skill in all 60 sports. Durability (DUR) however, is considered the least utilized skill based on the total demand for each sport. 
+
+- Side note: The y-axis,(Total) starts at 275 and not a baseline at zero b/c were trying to  display the data more precisely. All total amounts are above 275.
+
+
 ## Conclusion
 
-- In conclusion, we can determine that the data-set reveals that out of 60 sports. Boxing is considered the most difficult sport and fishing is more effortless. Team sports seemed to be more competitive and difficult compared to individual sports, based on their mean total. 
+- In conclusion, we can determine that the data-set reveals that out of 60 sports. Boxing is considered the most difficult sport and fishing is more effortless based on their total amount of difficulty based on 10 skills ranked 1-10. Each skill differentiates and presents a range of difficulty for each sport. Team sports seemed to be more competitive and difficult compared to individual sports, based on their mean total. 
 
 
